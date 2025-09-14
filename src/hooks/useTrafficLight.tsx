@@ -54,12 +54,14 @@ export const useTrafficLight = () => {
 
     return {
         // Props/Values
-        colors,
         light,
         countdown,
 
         // Computed
-        percentage: countdown / 5 * 100
+        percentage: countdown / 5 * 100,
+        greenLight: light === 'green' ? colors.green : 'bg-gray-500',
+        redLight: light === 'red' ? colors.red : 'bg-gray-500',
+        yellowLight: light === 'yellow' ? colors.yellow : 'bg-gray-500'
 
         // Methods/Actions
     }
