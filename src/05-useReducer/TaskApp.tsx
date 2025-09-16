@@ -119,8 +119,8 @@ export const TasksApp = () => {
                                     <div
                                         key={todo.id}
                                         className={`flex items-center gap-3 p-3 rounded-lg border transition-all duration-200 ${todo.completed
-                                                ? 'bg-slate-50 border-slate-200'
-                                                : 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-sm'
+                                            ? 'bg-slate-50 border-slate-200'
+                                            : 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-sm'
                                             }`}
                                     >
                                         <Checkbox
@@ -130,8 +130,8 @@ export const TasksApp = () => {
                                         />
                                         <span
                                             className={`flex-1 transition-all duration-200 ${todo.completed
-                                                    ? 'text-slate-500 line-through'
-                                                    : 'text-slate-800'
+                                                ? 'text-slate-500 line-through'
+                                                : 'text-slate-800'
                                                 }`}
                                         >
                                             {todo.text}
