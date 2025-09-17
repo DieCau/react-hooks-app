@@ -18,12 +18,18 @@ export type TaskAction =
 
 // Creo una funcion para configurar el ESTADO INICIAL
 export const getTaskInitialState = (): TaskState => {
-  return {
-    todos: [],
-    completed: 0,
-    pending: 0,
-    length: 0,
-  };
+  const localStorageState = localStorage.getItem('task-state');
+
+  if (!localStorageState) {
+    return {
+      todos: [],
+      completed: 0,
+      pending: 0,
+      length: 0,
+    };
+  }
+
+  return JSON.parse(localStorageState);
 };
 
 // un Reducer es una función que SIEMPRE regresa un valor o un estado nuevo
