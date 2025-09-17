@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
 
 import { Plus, Trash2, Check } from 'lucide-react';
 
@@ -6,51 +6,68 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { getTaskInitialState, taskReducer } from './tasksReducer';
 
-interface Todo {
-    id: number;
-    text: string;
-    completed: boolean;
-}
+// interface Todo {
+//     id: number;
+//     text: string;
+//     completed: boolean;
+// }
 
 export const TasksApp = () => {
-    const [todos, setTodos] = useState<Todo[]>([]);
     const [inputValue, setInputValue] = useState('');
+    // const [todos, setTodos] = useState<Todo[]>([]);
 
+    const [state, dispatch] = useReducer(taskReducer, getTaskInitialState())
+
+    // Agregar una nueva tarea
     const addTodo = () => {
         // Condición para NO ingresar texto vacío
         if (inputValue.length === 0) return;
-
-        const newTodo: Todo = {
-            id: Date.now(),
-            text: inputValue.trim(),
-            completed: false,
-        };
-
-        // Insertar un ToDo nuevo al Todo[]
-        setTodos([...todos, newTodo]);
-        // Otra forma de hacerlo sería
-        //! setTodos((prev)=> [...prev, newTodo])
+        // llamo al dispatch
+        dispatch({ type: 'ADD_TODO', payload: inputValue })
         // Limpiar el inputValue
         setInputValue('');
+
+
+        // const newTodo: Todo = {
+        //     id: Date.now(),
+        //     text: inputValue.trim(),
+        //     completed: false,
+        // };
+
+        // // Insertar un ToDo nuevo al Todo[]
+        // setTodos([...todos, newTodo]);
+        // // Otra forma de hacerlo sería
+        // //! setTodos((prev)=> [...prev, newTodo])
+        // Limpiar el inputValue
+        // setInputValue('');
     };
 
     // Cambiar de estado una tarea
     const toggleTodo = (id: number) => {
-        const updateTodos = todos.map((todo) => {
-            if (todo.id === id) {
-                return { ...todo, completed: !todo.completed };
-            }
-            return todo;
-        });
 
-        setTodos(updateTodos)
+        dispatch({ type: 'TOGGLE_TODO', payload: id })
+
+
+        // const updatedTodos = todos.map((todo) => {
+        //     if (todo.id === id) {
+        //         return { ...todo, completed: !todo.completed };
+        //     }
+        //     return todo;
+        // });
+
+        // setTodos(updatedTodos)
     };
 
     // Eliminar una tarea
     const deleteTodo = (id: number) => {
-        const updatedTodos = todos.filter(todo => todo.id !== id)
-        setTodos(updatedTodos)
+
+
+        dispatch({ type: 'DELETE_TODO', payload: id })
+
+        // const updatedTodos = todos.filter(todo => todo.id !== id)
+        // setTodos(updatedTodos)
     };
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -59,6 +76,8 @@ export const TasksApp = () => {
             addTodo(); // llama a la funcion addTodo()
         }
     };
+
+    const todos = state.todos
 
     const completedCount = todos.filter((todo) => todo.completed).length;
     const totalCount = todos.length;
